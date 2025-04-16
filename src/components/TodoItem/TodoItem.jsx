@@ -9,7 +9,6 @@ export default function TodoItem({
 	setIsOpenFormAddTask,
 	isOpenFormAddTask,
 	isError,
-	setFormPush,
 }) {
 	const [todoName, setTodoName] = useState(todo.name);
 	const [isEditable, setIsEditable] = useState(false);
@@ -56,7 +55,7 @@ export default function TodoItem({
 			</div>
 
 			{Array.isArray(todo.tasks) &&
-				todo.tasks.length > 0 &&
+				todo.tasks.length &&
 				todo.tasks.map((task) => (
 					<li key={task.id} className="todo-item">
 						<div
@@ -131,7 +130,6 @@ export default function TodoItem({
 		});
 
 		localStorage.setItem("todos", JSON.stringify(updatedTodos));
-		setFormPush(updatedTodos);
 	}
 	function handleNameSubmit() {
 		const existingTodos = JSON.parse(localStorage.getItem("todos")) || [];
@@ -152,7 +150,6 @@ export default function TodoItem({
 			return item;
 		});
 		localStorage.setItem("todos", JSON.stringify(updatedTodos));
-		setFormPush(updatedTodos);
 		setIsEditable(false);
 	}
 }

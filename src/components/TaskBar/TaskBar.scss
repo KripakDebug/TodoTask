@@ -31,6 +31,7 @@
                 font-size: 22px;
                 border-radius: 1px;
                 margin: 16px 0px;
+                background: none;
 
                 &::placeholder {
                     color: rgba(199, 199, 199, 1);
@@ -78,6 +79,7 @@
             font-size: 42px;
             border: none;
             outline: none;
+            background: none;
             padding: 0;
         }
 
@@ -109,6 +111,7 @@
             border-radius: 100%;
             cursor: pointer;
             margin-right: 10px;
+
             img {
                 width: 13px;
                 background: none;
@@ -123,7 +126,7 @@
         outline: none;
         font-size: 22px;
         cursor: pointer;
-        width: -webkit-fill-available;
+        width: 100%;
 
         img {
             transform: scale(1.4);

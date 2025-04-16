@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./TaskBar.scss";
 import TodoItem from "../TodoItem/TodoItem";
 
-export default function TaskBar({ activeTodo, formPush, setFormPush }) {
-	const [todos, setTodos] = useState(
-		JSON.parse(localStorage.getItem("todos")) || []
-	);
+export default function TaskBar({ activeTodo, todos }) {
+
 	const [isError, setIsError] = useState(false);
 	const [isOpenFormAddTask, setIsOpenFormAddTask] = useState(false);
-
-	useEffect(() => {
-		const updatedTodos = JSON.parse(localStorage.getItem("todos")) || [];
-		setTodos(updatedTodos);
-	}, [formPush]);
 
 	const filteredTodos =
 		activeTodo === "all-todo"
@@ -26,7 +19,6 @@ export default function TaskBar({ activeTodo, formPush, setFormPush }) {
 					filteredTodos.map((todo) => (
 						<TodoItem
 							key={todo.id}
-							setFormPush={setFormPush}
 							todo={todo}
 							submitTaskForm={submitTaskForm}
 							setIsOpenFormAddTask={setIsOpenFormAddTask}
@@ -81,7 +73,6 @@ export default function TaskBar({ activeTodo, formPush, setFormPush }) {
 		});
 
 		localStorage.setItem("todos", JSON.stringify(updatedTodos));
-		setFormPush(newTask);
 		form.reset();
 		setIsOpenFormAddTask(false);
 	}

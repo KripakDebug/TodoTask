@@ -5,21 +5,18 @@ import alltodo from "../../assets/images/alltodo.svg";
 import plus from "../../assets/images/plus.svg";
 import deleteIcon from "../../assets/images/delete.svg";
 
-export default function SideBar({ activeTodo, setActiveTodo, setFormPush }) {
+export default function SideBar({ activeTodo, setActiveTodo, todos }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isError, setIsError] = useState(false);
-	const todos = JSON.parse(localStorage.getItem("todos")) || [];
 
 	return (
 		<div className="side-bar">
-			{todos.length >= 2 && (
-				<button
-					onClick={() => setActiveTodo("all-todo")}
-					className={activeTodo === "all-todo" ? "btn active" : "btn"}
-				>
-					<img src={alltodo} alt="" /> Усі завдання
-				</button>
-			)}
+			<button
+				onClick={() => setActiveTodo("all-todo")}
+				className={activeTodo === "all-todo" ? "btn active" : "btn"}
+			>
+				<img src={alltodo} alt="" /> Усі завдання
+			</button>
 
 			<ul className="todo-list">
 				{todos.map((todo, index) => (
@@ -84,8 +81,6 @@ export default function SideBar({ activeTodo, setActiveTodo, setFormPush }) {
 		const updatedTodos = existingTodos.filter((item) => item.id !== todoId);
 
 		localStorage.setItem("todos", JSON.stringify(updatedTodos));
-
-		setFormPush(updatedTodos);
 	}
 
 	function submitForm(e) {
@@ -112,7 +107,6 @@ export default function SideBar({ activeTodo, setActiveTodo, setFormPush }) {
 		existingTodos.push(newTodo);
 
 		localStorage.setItem("todos", JSON.stringify(existingTodos));
-		setFormPush(newTodo);
 		form.reset();
 		setIsOpen(false);
 	}
