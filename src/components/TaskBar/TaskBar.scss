@@ -70,53 +70,14 @@
         }
     }
 
-    .todo-title {
-        display: flex;
-        margin-bottom: 52px;
-        flex-direction: column;
-
-        input {
-            font-size: 42px;
-            border: none;
-            outline: none;
-            background: none;
-            padding: 0;
-        }
 
 
-
-        img {
-            transform: scale(1.4);
-            cursor: pointer;
-            margin-left: 20px;
-            background: none;
-
-        }
-    }
-
-    .todo-item {
+    .todo-task-item {
         list-style: none;
         margin: 15px 0px;
         font-size: 21px;
         display: flex;
         align-items: center;
-
-        .todo-circle {
-            width: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 30px;
-            border: 3px solid rgba(232, 232, 232, 1);
-            border-radius: 100%;
-            cursor: pointer;
-            margin-right: 10px;
-
-            img {
-                width: 13px;
-                background: none;
-            }
-        }
     }
 
     .btn {

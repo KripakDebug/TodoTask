@@ -1,79 +1,28 @@
-import React, { useState } from "react";
+import React from "react";
 import "./TaskBar.scss";
 import TodoItem from "../TodoItem/TodoItem";
+import useTodosStore from "../../hooks/todosStore/useTodosStore.js";
+import {ALL_VISIBLE_LISTS} from "../../application.constants.js";
 
-export default function TaskBar({ activeTodo, todos }) {
+export default function TaskBar({ activeTodoId }) {
+	const todos = useTodosStore();
 
-	const [isError, setIsError] = useState(false);
-	const [isOpenFormAddTask, setIsOpenFormAddTask] = useState(false);
-
-	const filteredTodos =
-		activeTodo === "all-todo"
-			? todos
-			: todos.filter((todo) => todo.id === activeTodo);
+	const filteredTodos = React.useMemo(() => {
+		if (activeTodoId === ALL_VISIBLE_LISTS) return todos;
+		return todos.filter((todo) => todo.id === activeTodoId);
+	}, [activeTodoId, todos]);
 
 	return (
 		<>
 			<div className="wrapper-todos">
-				{filteredTodos.length > 0 &&
-					filteredTodos.map((todo) => (
-						<TodoItem
-							key={todo.id}
-							todo={todo}
-							submitTaskForm={submitTaskForm}
-							setIsOpenFormAddTask={setIsOpenFormAddTask}
-							isOpenFormAddTask={isOpenFormAddTask}
-							isError={isError}
-						/>
-					))}
+				{ filteredTodos?.map((todo) => <TodoItem key={todo.id} todo={todo} />)}
 			</div>
 
-			{filteredTodos.length === 0 && (
+			{!filteredTodos.length && (
 				<div className="task-bar">
 					<div className="text-static">Завдання відсутні</div>
 				</div>
 			)}
 		</>
 	);
-
-	function submitTaskForm(e, todoId) {
-		e.preventDefault();
-
-		const form = e.target;
-		const taskName = form.name.value.trim();
-		const nameRegex =
-			/^(?!.* {2})[a-zA-Zа-яА-ЯіїєІЇЄ]+( [a-zA-Zа-яА-ЯіїєІЇЄ]+)*$/;
-
-		if (!taskName || !nameRegex.test(taskName)) {
-			setIsError(true);
-			return;
-		} else {
-			setIsError(false);
-		}
-
-		const newTask = {
-			id: crypto.randomUUID(),
-			name: taskName,
-			completed: false,
-			isActive: false,
-			createdAt: new Date().toISOString(),
-		};
-
-		const existingTodos = JSON.parse(localStorage.getItem("todos")) || [];
-
-		const updatedTodos = existingTodos.map((todo) => {
-			if (todo.id === todoId) {
-				const updatedTasks = todo.tasks ? [...todo.tasks, newTask] : [newTask];
-				return {
-					...todo,
-					tasks: updatedTasks,
-				};
-			}
-			return todo;
-		});
-
-		localStorage.setItem("todos", JSON.stringify(updatedTodos));
-		form.reset();
-		setIsOpenFormAddTask(false);
-	}
 }

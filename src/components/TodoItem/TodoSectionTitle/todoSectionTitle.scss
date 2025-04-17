@@ -1,0 +1,21 @@
+.todo-section-title {
+	display: flex;
+	margin-bottom: 52px;
+	flex-direction: column;
+
+	input {
+		font-size: 42px;
+		border: none;
+		outline: none;
+		background: none;
+		padding: 0;
+	}
+
+	img {
+		transform: scale(1.4);
+		cursor: pointer;
+		margin-left: 20px;
+		background: none;
+
+	}
+}

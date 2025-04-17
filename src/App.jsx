@@ -1,22 +1,15 @@
-import { useState } from "react";
+import React from "react";
 import "./App.scss";
 import SideBar from "./components/SideBar/SideBar";
-import TaskBar from "./components/TaskBar/TaskBar";
+import TaskBar from "./components/TaskBar/TaskBar.jsx";
+import {ALL_VISIBLE_LISTS} from "./application.constants.js";
+
 function App() {
-	const [activeTodo, setActiveTodo] = useState("all-todo");
-
-	const [todos, setTodos] = useState(
-		JSON.parse(localStorage.getItem("todos")) || []
-	);
-
+	const [activeTodoId, setActiveTodoId] = React.useState(ALL_VISIBLE_LISTS);
 	return (
-		<div className="wrapper">
-			<SideBar
-				activeTodo={activeTodo}
-				setActiveTodo={setActiveTodo}
-				todos={todos}
-			/>
-			<TaskBar activeTodo={activeTodo} todos={todos} />
+		<div className="application-container">
+			<SideBar activeTodoId={activeTodoId} setActiveTodoId={setActiveTodoId} />
+			<TaskBar activeTodoId={activeTodoId} />
 		</div>
 	);
 }
