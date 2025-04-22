@@ -4,16 +4,20 @@ import exit from "../../assets/images/exit.svg";
 import alltodo from "../../assets/images/alltodo.svg";
 import plus from "../../assets/images/plus.svg";
 import deleteIcon from "../../assets/images/delete.svg";
+import useTodosStore from "../../hooks/todosStore/useTodosStore.js";
+import {addTodo, deleteTodo} from "../../hooks/todosStore/todosStore.js";
 
-export default function SideBar({ activeTodo, setActiveTodo, todos }) {
-	const [isOpen, setIsOpen] = useState(false);
+export default function SideBar({ activeTodoId, setActiveTodoId }) {
+	// TODO: Rename to more consistent names
+	const [isOpen, setisOpen] = useState(false);
 	const [isError, setIsError] = useState(false);
+	const todos = useTodosStore();
 
 	return (
 		<div className="side-bar">
 			<button
-				onClick={() => setActiveTodo("all-todo")}
-				className={activeTodo === "all-todo" ? "btn active" : "btn"}
+				onClick={() => setActiveTodoId("all-todo")}
+				className={activeTodoId === "all-todo" ? "btn active" : "btn"}
 			>
 				<img src={alltodo} alt="" /> Усі завдання
 			</button>
@@ -22,8 +26,8 @@ export default function SideBar({ activeTodo, setActiveTodo, todos }) {
 				{todos.map((todo, index) => (
 					<li
 						key={index}
-						onClick={() => setActiveTodo(todo.id)}
-						className={activeTodo === todo.id ? "active" : ""}
+						onClick={() => setActiveTodoId(todo.id)}
+						className={activeTodoId === todo.id ? "active" : ""}
 					>
 						<div>
 							<div>
@@ -33,10 +37,10 @@ export default function SideBar({ activeTodo, setActiveTodo, todos }) {
 								></div>
 								<p>{todo.name}</p>
 							</div>
-							{activeTodo === todo.id && (
+							{activeTodoId === todo.id && (
 								<img
 									src={deleteIcon}
-									onClick={() => handleDeleteTodo(todo.id)}
+									onClick={() => deleteTodo(todo.id)}
 									alt=""
 								/>
 							)}
@@ -45,7 +49,7 @@ export default function SideBar({ activeTodo, setActiveTodo, todos }) {
 				))}
 			</ul>
 
-			<button className="btn add-todo" onClick={() => setIsOpen(true)}>
+			<button className="btn add-todo" onClick={() => setisOpen(true)}>
 				<img src={plus} alt="" /> Додати папку
 			</button>
 			{isOpen && (
@@ -53,7 +57,7 @@ export default function SideBar({ activeTodo, setActiveTodo, todos }) {
 					<div
 						className="exit"
 						onClick={() => {
-							setIsOpen(false), setIsError(false);
+							setisOpen(false), setIsError(false);
 						}}
 					>
 						<img src={exit} alt="" />
@@ -69,45 +73,29 @@ export default function SideBar({ activeTodo, setActiveTodo, todos }) {
 						{isError && (
 							<p className="error">Назва має містити тільки літери</p>
 						)}
-						<button className="btn-popup">Додати</button>
+						<button type="submit"  className="btn-popup">Додати</button>
 					</form>
 				</div>
 			)}
 		</div>
 	);
 
-	function handleDeleteTodo(todoId) {
-		const existingTodos = JSON.parse(localStorage.getItem("todos")) || [];
-		const updatedTodos = existingTodos.filter((item) => item.id !== todoId);
-
-		localStorage.setItem("todos", JSON.stringify(updatedTodos));
-	}
-
 	function submitForm(e) {
 		e.preventDefault();
 		const form = e.target;
 		const name = form.name.value.trim();
 		const color = form.color.value;
-		const nameRegex =
-			/^(?!.* {2})[a-zA-Zа-яА-ЯіїєІЇЄ]+( [a-zA-Zа-яА-ЯіїєІЇЄ]+)*$/;
 
-		if (!name || !nameRegex.test(name)) {
+		if (!name){
 			setIsError(true);
 			return;
 		} else {
 			setIsError(false);
 		}
-		const newTodo = {
-			name,
-			id: crypto.randomUUID(),
-			color,
-			createdAt: new Date().toISOString(),
-		};
-		const existingTodos = JSON.parse(localStorage.getItem("todos")) || [];
-		existingTodos.push(newTodo);
 
-		localStorage.setItem("todos", JSON.stringify(existingTodos));
+		addTodo(name, color);
+
 		form.reset();
-		setIsOpen(false);
+		setisOpen(false);
 	}
 }
