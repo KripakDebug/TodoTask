@@ -77,7 +77,18 @@
         margin: 15px 0px;
         font-size: 21px;
         display: flex;
+
+        &.cross {
+            text-decoration: line-through;
+        }
+
         align-items: center;
+
+        .delete-task {
+            margin-left: 10px;
+            width: 15px;
+            cursor: pointer;
+        }
     }
 
     .btn {

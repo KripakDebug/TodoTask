@@ -1,7 +1,7 @@
 export function createTaskEntity(name) {
     return {
         id: crypto.randomUUID(),
-        name: name,
+        name,
         completed: false,
         isActive: false,
         createdAt: new Date().toISOString(),

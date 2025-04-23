@@ -1,8 +1,8 @@
 import React from "react";
 import "./TaskBar.scss";
-import TodoItem from "../TodoItem/TodoItem";
+import TodoDetails from "../TodoDetails/TodoDetails";
 import useTodosStore from "../../hooks/todosStore/useTodosStore.js";
-import {ALL_VISIBLE_LISTS} from "../../application.constants.js";
+import { ALL_VISIBLE_LISTS } from "../../application.constants.js";
 
 export default function TaskBar({ activeTodoId }) {
 	const todos = useTodosStore();
@@ -15,7 +15,9 @@ export default function TaskBar({ activeTodoId }) {
 	return (
 		<>
 			<div className="wrapper-todos">
-				{ filteredTodos?.map((todo) => <TodoItem key={todo.id} todo={todo} />)}
+				{filteredTodos?.map((todo) => (
+					<TodoDetails key={todo.id} todo={todo} />
+				))}
 			</div>
 
 			{!filteredTodos.length && (
