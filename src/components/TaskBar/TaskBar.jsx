@@ -6,7 +6,7 @@ import { ALL_VISIBLE_LISTS } from "../../application.constants.js";
 
 export default function TaskBar({ activeTodoId }) {
 	const todos = useTodosStore();
-
+	
 	const filteredTodos = React.useMemo(() => {
 		if (activeTodoId === ALL_VISIBLE_LISTS) return todos;
 		return todos.filter((todo) => todo.id === activeTodoId);

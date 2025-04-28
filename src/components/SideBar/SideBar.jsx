@@ -24,6 +24,7 @@ export default function SideBar({ activeTodoId, setActiveTodoId }) {
 				{todos.map((todo, index) => (
 					<TodoListItem
 						todo={todo}
+						key={index}
 						index={index}
 						deleteTodo={deleteTodo}
 						activeTodoId={activeTodoId}
