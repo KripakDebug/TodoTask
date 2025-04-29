@@ -3,41 +3,38 @@ import "./SideBar.scss";
 import alltodo from "../../assets/images/alltodo.svg";
 import plus from "../../assets/images/plus.svg";
 import useTodosStore from "../../hooks/todosStore/useTodosStore.js";
-import { addTodo, deleteTodo } from "../../hooks/todosStore/todosStore.js";
 import PopupAddTodo from "./PopupAddTodo/PopupAddTodo.jsx";
 import TodoListItem from "./TodoListItem/TodoListItem.jsx";
+import {useNavigate, useParams} from "react-router-dom";
 
-export default function SideBar({ activeTodoId, setActiveTodoId }) {
-	const [isOpenPopup, setisOpenPopup] = useState(false);
+export default function SideBar() {
+	const [isOpenPopup, setIsOpenPopup] = useState(false);
 	const todos = useTodosStore();
+	const navigate = useNavigate();
+	const params = useParams();
+
+	const activeTodoId = params.activeTodoId;
 
 	return (
 		<div className="side-bar">
 			<button
-				onClick={() => setActiveTodoId("all-todo")}
-				className={activeTodoId === "all-todo" ? "btn active" : "btn"}
+				onClick={() => navigate('/')}
+				className={!activeTodoId ? "btn active" : "btn"}
 			>
 				<img src={alltodo} alt="" /> Усі завдання
 			</button>
 
 			<ul className="todo-list">
-				{todos.map((todo, index) => (
-					<TodoListItem
-						todo={todo}
-						key={index}
-						index={index}
-						deleteTodo={deleteTodo}
-						activeTodoId={activeTodoId}
-						setActiveTodoId={setActiveTodoId}
-					/>
+				{todos.map((todo) => (
+					<TodoListItem todo={todo} key={todo.id} />
 				))}
 			</ul>
 
-			<button className="btn add-todo" onClick={() => setisOpenPopup(true)}>
+			<button className="btn add-todo" onClick={() => setIsOpenPopup(true)}>
 				<img src={plus} alt="" /> Додати папку
 			</button>
 			{isOpenPopup && (
-				<PopupAddTodo addTodo={addTodo} setisOpenPopup={setisOpenPopup} />
+				<PopupAddTodo setIsOpenPopup={setIsOpenPopup} />
 			)}
 		</div>
 	);

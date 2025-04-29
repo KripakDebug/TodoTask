@@ -1,18 +1,23 @@
 import React from "react";
 import deleteIcon from "../../../assets/images/delete.svg";
-import { Link } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import {deleteTodo} from "../../../hooks/todosStore/todosStore.js";
 
-export default function TodoListItem({
-	todo,
-	index,
-	activeTodoId,
-	setActiveTodoId,
-	deleteTodo,
-}) {
+export default function TodoListItem({ todo }) {
+	const navigate = useNavigate();
+	const params = useParams();
+	const activeTodoId = params.activeTodoId;
+
+
+	function onDeleteTodoHandler(e) {
+		e.stopPropagation();
+		deleteTodo(todo.id);
+		navigate('/', { replace: true });
+	}
+
 	return (
 		<li
-			key={index}
-			onClick={() => setActiveTodoId(todo.id)}
+			onClick={() => navigate(`/${todo.id}`)}
 			className={activeTodoId === todo.id ? "active" : ""}
 		>
 			<div>
@@ -21,7 +26,7 @@ export default function TodoListItem({
 					<p>{todo.name}</p>
 				</div>
 				{activeTodoId === todo.id && (
-					<img src={deleteIcon} onClick={() => deleteTodo(todo.id)} alt="" />
+					<img src={deleteIcon} onClick={onDeleteTodoHandler} alt="" />
 				)}
 			</div>
 		</li>

@@ -2,12 +2,15 @@ import React from "react";
 import "./TaskBar.scss";
 import TodoDetails from "../TodoDetails/TodoDetails";
 import useTodosStore from "../../hooks/todosStore/useTodosStore.js";
-import { ALL_VISIBLE_LISTS } from "../../application.constants.js";
+import {useParams} from "react-router-dom";
 
-export default function TaskBar({ activeTodoId }) {
+export default function TaskBar() {
+	const params = useParams();
 	const todos = useTodosStore();
+	const activeTodoId = params.activeTodoId;
+
 	const filteredTodos = React.useMemo(() => {
-		if (activeTodoId === ALL_VISIBLE_LISTS) return todos;
+		if (!activeTodoId) return todos;
 		return todos.filter((todo) => todo.id === activeTodoId);
 	}, [activeTodoId, todos]);
 
